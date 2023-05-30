@@ -38,4 +38,123 @@ public class Board {
     }
     board.updatePixels();
   }
+  
+    public Cell getCell(int row, int col) {
+    return gameBoard[row][col];
+  }
+  
+  public int getRows() {
+    return rows;
+  }
+  
+  public int getColumns() {
+    return columns;
+  }
+  
+  public boolean checkForWin(int lastRow, int lastCol) {
+  int currentColor = gameBoard[lastRow][lastCol].getCellColor();
+
+  // Check horizontal win
+  int count = 1;
+  int leftCol = lastCol - 1;
+  while (leftCol >= 0 && gameBoard[lastRow][leftCol].isOccupied() && gameBoard[lastRow][leftCol].getCellColor() == currentColor) {
+    count++;
+    leftCol--;
+  }
+  int rightCol = lastCol + 1;
+  while (rightCol < columns && gameBoard[lastRow][rightCol].isOccupied() && gameBoard[lastRow][rightCol].getCellColor() == currentColor) {
+    count++;
+    rightCol++;
+  }
+  if (count >= 4) {
+    return true;
+  }
+
+  // Check vert wins
+  count = 1;
+  int topRow = lastRow - 1;
+  while (topRow >= 0 && gameBoard[topRow][lastCol].isOccupied() && gameBoard[topRow][lastCol].getCellColor() == currentColor) {
+    count++;
+    topRow--;
+  }
+  int bottomRow = lastRow + 1;
+  while (bottomRow < rows && gameBoard[bottomRow][lastCol].isOccupied() && gameBoard[bottomRow][lastCol].getCellColor() == currentColor) {
+    count++;
+    bottomRow++;
+  }
+  if (count >= 4) {
+    return true;
+  }
+
+  // diagonal 1: Check topleft to bottomright win
+  count = 1;
+  int row = lastRow - 1;
+  int col = lastCol - 1;
+  while (row >= 0 && col >= 0 && gameBoard[row][col].isOccupied() && gameBoard[row][col].getCellColor() == currentColor) {
+    count++;
+    row--;
+    col--;
+  }
+  row = lastRow + 1;
+  col = lastCol + 1;
+  while (row < rows && col < columns && gameBoard[row][col].isOccupied() && gameBoard[row][col].getCellColor() == currentColor) {
+    count++;
+    row++;
+    col++;
+  }
+  if (count >= 4) {
+    return true;
+  }
+
+  // diagonal 2: Check topright to bottomleft) win
+  count = 1;
+  row = lastRow - 1;
+  col = lastCol + 1;
+  while (row >= 0 && col < columns && gameBoard[row][col].isOccupied() && gameBoard[row][col].getCellColor() == currentColor) {
+    count++;
+    row--;
+    col++;
+  }
+  row = lastRow + 1;
+  col = lastCol - 1;
+  while (row < rows && col >= 0 && gameBoard[row][col].isOccupied() && gameBoard[row][col].getCellColor() == currentColor) {
+    count++;
+    row++;
+    col--;
+  }
+  if (count >= 4) {
+    return true;
+  }
+
+  return false;
+}
+
+public int getYCorConstant(int xCor){
+  int column = (xCor - 118) / 95;
+  return findEmptyRow(column);
+}
+
+public void updateBoard(int xCor) {
+  int column = (xCor - 118) / 95; // determine what column piece goes in based on mouse xCor
+
+  int emptyRow = findEmptyRow(column); // find first empty row in given column
+
+  if (emptyRow != -1) {
+    Cell cell = getCell(emptyRow, column);
+    cell.setOccupied(true); // Set cell as occupied
+    cell.setCellColor(1); // Set cell color to represent the current player
+
+    // Check if the current move results in a win
+    boolean isWin = checkForWin(emptyRow, column);
+    if (isWin) {
+      // Handle the win condition
+      // ...
+    } else {
+      // Handle the next player's turn
+      // ...
+    }
+  }
+}
+
+  
 }

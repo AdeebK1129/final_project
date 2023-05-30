@@ -14,11 +14,13 @@ void setup() {
   board = loadImage("board.png");
   spare = board.copy();
   save = board.copy();
-  size = 40; // Updated size to half of the desired diameter (75 pixels)
+  size = 42; // Updated size to half of the desired diameter (75 pixels)
   row = 0;
-  coord = new PVector(row * 93 + 118, 85); // Adjusted y-coordinate to position the initial game piece above the first column
+  coord = new PVector(row * 94 + 118, 178); // Adjusted y-coordinate to position the initial game piece above the first column
   done = false;
 }
+
+Board gameBoard = new Board();
 
 void draw() {
   if (coord.y <= 40) row = mouseX / 94 - 1;
@@ -27,8 +29,9 @@ void draw() {
 
   image(board, 0, 0); // Adjusted the y-coordinate to (0) for a better display
 
-  if (coord.y < 730 && start == 1) {
-    coord.y += (718 - coord.y) / 15;
+  if (coord.y < 655 && start == 1) {
+    coord.y += (770 - coord.y) / 15;
+    gameBoard.updateBoard(mouseX);
   } else if (coord.y > 730) {
     coord.y = 730;
   }
@@ -74,10 +77,6 @@ void keyPressed(){ //restart the demo
      board = save.copy();
      if(pieceColor == color(0, 0, 255)) pieceColor = color(255, 0, 0);
      else pieceColor = color(0, 0, 255);
-  }
-  else{
-    board = spare.copy();
-    save = spare.copy();
   }
   board.updatePixels();
   }
