@@ -8,7 +8,7 @@ int row;
 boolean done;
 int start = 0;
 color pieceColor = color(0, 0, 255);
-// random test comment
+// random test comment update test
 
 void setup(){
   row = 0;
