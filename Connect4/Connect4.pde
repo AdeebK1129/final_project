@@ -10,6 +10,7 @@ int start = 0;
 color pieceColor = color(0, 0, 255);
 int colorNum = 1;
 int targetY = 770;
+int targetRow = 5;
 
 void setup() {
   size(792, 770);
@@ -29,11 +30,12 @@ void setup() {
 Board gameBoard = new Board();
 
 public int findTargetYCor(int xCor) {
-  int column = (xCor - 118) / 90; // Calculate the column based on xCor (adjust the values according to your specific layout)
+  int column = (xCor - 62) / 90; // Calculate the column based on xCor (adjust the values according to your specific layout)
   
   if (column >= 0 && column < gameBoard.getColumns()) {
     for (int row = gameBoard.getRows() - 1; row >= 0; row--) {
       if (!gameBoard.getCell(row, column).isOccupied()) {
+        targetRow = row;
         return gameBoard.getCell(row, column).getYCor();
       }
     }
@@ -72,7 +74,7 @@ void draw() {
 
       if ((withinHoles || y < 178) && withinCoord) {
         board.set(x, y, pieceColor);
-        if (sqrt(pow((x - holes[5].x), 2) + pow((y - holes[5].y), 2)) <= size) {
+        if (sqrt(pow((x - holes[targetRow].x), 2) + pow((y - holes[targetRow].y), 2)) <= size) {
           save.set(x, y, board.get(x, y));
         }
       } else {
