@@ -20,8 +20,8 @@ public class Board {
     return -1;
   }
 
-  public void setCellOccupied(int row, int column, boolean occupied) {
-    gameBoard[row][column].setOccupied(occupied);
+  public void setCellOccupied(int row, int column) {
+    gameBoard[row][column].setOccupied();
   }
 
   public void display() {
@@ -30,8 +30,8 @@ public class Board {
         Cell cell = gameBoard[row][col];
         if (cell.isOccupied()) {
           // Display occupied cell
-          int xCor = 118 + col * 95;
-          int yCor = 178 + row * 95;
+          int xCor = 118 + col * 94;
+          int yCor = 178 + row * 94;
           board.set(xCor, yCor, pieceColor);
         }
       }
@@ -67,6 +67,7 @@ public class Board {
     rightCol++;
   }
   if (count >= 4) {
+    System.out.println("Player " + currentColor + " Wins!");
     return true;
   }
 
@@ -83,7 +84,9 @@ public class Board {
     bottomRow++;
   }
   if (count >= 4) {
+    System.out.println("Player " + currentColor + " Wins!");
     return true;
+    
   }
 
   // diagonal 1: Check topleft to bottomright win
@@ -129,26 +132,19 @@ public class Board {
   return false;
 }
 
-public int getYCorConstant(int xCor){
-  int column = (xCor - 118) / 95;
-  return findEmptyRow(column);
-}
 
-public void updateBoard(int xCor) {
+public void updateBoard(int xCor, int colorNum) {
   int column = (xCor - 118) / 95; // determine what column piece goes in based on mouse xCor
 
   int emptyRow = findEmptyRow(column); // find first empty row in given column
 
   if (emptyRow != -1) {
-    Cell cell = getCell(emptyRow, column);
-    cell.setOccupied(true); // Set cell as occupied
-    cell.setCellColor(1); // Set cell color to represent the current player
+    gameBoard[emptyRow][column].setOccupied();
+    gameBoard[emptyRow][column].setCellColor(colorNum);
 
     // Check if the current move results in a win
     boolean isWin = checkForWin(emptyRow, column);
     if (isWin) {
-      // Handle the win condition
-      // ...
     } else {
       // Handle the next player's turn
       // ...
@@ -156,5 +152,14 @@ public void updateBoard(int xCor) {
   }
 }
 
-  
+public String toString(){
+   String arrString = "";
+    for(int i = 0; i < gameBoard.length; i++) {
+        for(int j = 0; j < gameBoard[i].length; j++) {
+            arrString += gameBoard[i][j].getCellColor() + " ";
+        }
+        arrString += "\n";
+    }
+    return arrString;
+}  
 }
