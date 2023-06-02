@@ -134,7 +134,7 @@ public class Board {
 
 
 public void updateBoard(int xCor, int colorNum) {
-  int column = (xCor - 62) / 95; // determine what column piece goes in based on mouse xCor
+  int column = xCor / 94 - 1; // determine what column piece goes in based on mouse xCor
 
   int emptyRow = findEmptyRow(column); // find first empty row in given column
 

@@ -30,8 +30,8 @@ void setup() {
 Board gameBoard = new Board();
 
 public int findTargetYCor(int xCor) {
-  int column = (xCor - 62) / 90; // Calculate the column based on xCor (adjust the values according to your specific layout)
-  
+  int column = xCor / 94 - 1; // Calculate the column based on xCor (adjust the values according to your specific layout)
+  println(row + " " + column);
   if (column >= 0 && column < gameBoard.getColumns()) {
     for (int row = gameBoard.getRows() - 1; row >= 0; row--) {
       if (!gameBoard.getCell(row, column).isOccupied()) {
@@ -45,6 +45,8 @@ public int findTargetYCor(int xCor) {
 
 void draw() {
   if (coord.y <= 40) row = mouseX / 94 - 1;
+  //println(mouseX + " " + row + " " + (row*94+118) + " " + coord.x);
+  //println(row);
   if (mouseX >= 118 && mouseX <= 718) coord.x = row * 94 + 118;
   for (int i = 0; i < 6; i++) holes[i] = new PVector(row * 94 + 118, 178 + 94 * i);
 
