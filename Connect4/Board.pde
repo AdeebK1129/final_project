@@ -106,6 +106,7 @@ public class Board {
     col++;
   }
   if (count >= 4) {
+    System.out.println("Player " + currentColor + " Wins!");
     return true;
   }
 
@@ -126,6 +127,7 @@ public class Board {
     col--;
   }
   if (count >= 4) {
+    System.out.println("Player " + currentColor + " Wins!");
     return true;
   }
 
