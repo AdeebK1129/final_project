@@ -4,13 +4,15 @@ PImage save;
 PVector holes[] = new PVector[6];
 PVector coord;
 int size;
-int row;
+int column;
 boolean done;
 int start = 0;
 color pieceColor = color(0, 0, 255);
 int colorNum = 1;
 int targetY = 770;
 int targetRow = 5;
+int targetX;
+Board gameBoard;
 
 void setup() {
   size(792, 770);
@@ -18,20 +20,18 @@ void setup() {
   text(mouseX, 10, 10);
   text(mouseY, 10, 30);
   
+  gameBoard = new Board();
   board = loadImage("board.png");
   spare = board.copy();
   save = board.copy();
   size = 42; // Updated size to half of the desired diameter (75 pixels)
-  row = 0;
-  coord = new PVector(row * 94 + 118, 40); // Adjusted y-coordinate to position the initial game piece above the first column
+  column = 0;
+  coord = new PVector(column * 94 + 118, 40); // Adjusted y-coordinate to position the initial game piece above the first column
   done = false;
 }
 
-Board gameBoard = new Board();
-
 public int findTargetYCor(int xCor) {
   int column = xCor / 94 - 1; // Calculate the column based on xCor (adjust the values according to your specific layout)
-  println(row + " " + column);
   if (column >= 0 && column < gameBoard.getColumns()) {
     for (int row = gameBoard.getRows() - 1; row >= 0; row--) {
       if (!gameBoard.getCell(row, column).isOccupied()) {
@@ -44,17 +44,20 @@ public int findTargetYCor(int xCor) {
 }
 
 void draw() {
-  if (coord.y <= 40) row = mouseX / 94 - 1;
-  //println(mouseX + " " + row + " " + (row*94+118) + " " + coord.x);
-  //println(row);
-  if (mouseX >= 118 && mouseX <= 718) coord.x = row * 94 + 118;
-  for (int i = 0; i < 6; i++) holes[i] = new PVector(row * 94 + 118, 178 + 94 * i);
+  targetX = mouseX;
+  if(targetX < 118) targetX = 118;
+  if(targetX > 718) targetX = 718;
+  if (coord.y <= 40) column = targetX / 94 - 1;
+  //println(mouseX + " " + column + " " + (column*94+118) + " " + coord.x);
+  //println(column);
+  coord.x = column * 94 + 118;
+  for (int i = 0; i < 6; i++) holes[i] = new PVector(column * 94 + 118, 178 + 94 * i);
 
   image(board, 0, 0); 
   if (coord.y < targetY && start == 1) {
     //float distance = targetY - coord.y;
     //float stepSize = distance / 15; 
-    coord.y += (coord.y-39) / 20;
+    coord.y += (coord.y-39) / 9;
   } else if (coord.y > targetY) {
     coord.y = targetY;
   }
@@ -74,7 +77,7 @@ void draw() {
 
       boolean withinCoord = sqrt(pow((coord.x - x), 2) + pow((coord.y - y), 2)) <= size;
 
-      if ((withinHoles || y < 178) && withinCoord) {
+      if ((withinHoles || y < 114) && withinCoord) {
         board.set(x, y, pieceColor);
         if (sqrt(pow((x - holes[targetRow].x), 2) + pow((y - holes[targetRow].y), 2)) <= size) {
           save.set(x, y, board.get(x, y));
@@ -101,13 +104,10 @@ void draw() {
 
 
 void mousePressed(){
-  if(start == 0){
-      if (coord.y == 40) {
+  if(start == 0 && gameBoard.findEmptyRow(column) != -1){
       start = 1;
-      int targetX = mouseX;
       targetY = findTargetYCor(targetX);
       gameBoard.updateBoard(targetX, colorNum);
       System.out.println(gameBoard);
-    }
   }
 }
