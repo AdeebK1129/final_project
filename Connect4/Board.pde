@@ -106,6 +106,7 @@ public class Board {
     col++;
   }
   if (count >= 4) {
+    System.out.println("Player " + currentColor + " Wins!");
     return true;
   }
 
@@ -126,6 +127,7 @@ public class Board {
     col--;
   }
   if (count >= 4) {
+    System.out.println("Player " + currentColor + " Wins!");
     return true;
   }
 
@@ -134,8 +136,7 @@ public class Board {
 
 
 public void updateBoard(int xCor, int colorNum) {
-  int column = (xCor - 118) / 95; // determine what column piece goes in based on mouse xCor
-
+  int column = xCor / 94 - 1; // determine what column piece goes in based on mouse xCor
   int emptyRow = findEmptyRow(column); // find first empty row in given column
 
   if (emptyRow != -1) {
