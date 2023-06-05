@@ -51,12 +51,12 @@ void draw() {
   for (int i = 0; i < 6; i++) holes[i] = new PVector(row * 94 + 118, 178 + 94 * i);
 
   image(board, 0, 0); 
-  if (coord.y < 655 && start == 1) {
-    float distance = targetY - coord.y;
-    float stepSize = distance / 15; 
-    coord.y += stepSize;
-  } else if (coord.y > 730) {
-    coord.y = 730;
+  if (coord.y < targetY && start == 1) {
+    //float distance = targetY - coord.y;
+    //float stepSize = distance / 15; 
+    coord.y += (coord.y-39) / 20;
+  } else if (coord.y > targetY) {
+    coord.y = targetY;
   }
 
   board.loadPixels();
@@ -84,35 +84,30 @@ void draw() {
       }
     }
   }
-
   board.updatePixels();
-}
-
-
-
-void keyPressed(){ //restart the demo
-  if (key == 'f') start = 1;
-  else{
-  start = 0;
-  coord.y = 40;
-  board.loadPixels();
-  if(key == 's'){
-     board = save.copy();
-     if(pieceColor == color(0, 0, 255)) pieceColor = color(255, 0, 0);
-     else pieceColor = color(0, 0, 255);
-     if(colorNum == 1) colorNum = 2;
-     else colorNum = 1;
-  }
-  board.updatePixels();
+  if(coord.y == targetY){
+    start = 0;
+    coord.y = 40;
+    if(pieceColor == color(0, 0, 255)){
+      pieceColor = color(255, 0, 0);
+      colorNum = 2;
+    }
+    else{
+      pieceColor = color(0, 0, 255);
+      colorNum = 1;
+    }
   }
 }
 
-void mousePressed() {
-  if (coord.y == 40) {
-    start = 1;
-    int targetX = mouseX;
-    targetY = findTargetYCor(targetX);
-    gameBoard.updateBoard(targetX, colorNum);
-    System.out.println(gameBoard);
+
+void mousePressed(){
+  if(start == 0){
+      if (coord.y == 40) {
+      start = 1;
+      int targetX = mouseX;
+      targetY = findTargetYCor(targetX);
+      gameBoard.updateBoard(targetX, colorNum);
+      System.out.println(gameBoard);
+    }
   }
 }
