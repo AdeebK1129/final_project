@@ -82,7 +82,7 @@ void draw() {
     for (int i = 0; i < 6; i++) holes[i] = new PVector(column * 94 + 118, 178 + 94 * i);
   
     image(board, 0, 0); 
-    if (coord.y < targetY && start == 1) coord.y += (coord.y-39) / 1;
+    if (coord.y < targetY && start == 1) coord.y += (coord.y-39) / 9;
     else if (coord.y > targetY) coord.y = targetY;
     
     if(coord.y == targetY) updated = 1;
