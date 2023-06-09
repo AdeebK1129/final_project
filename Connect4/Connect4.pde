@@ -6,17 +6,23 @@ PVector coord;
 int size;
 int column;
 boolean done;
-int start = 0;
-color pieceColor = color(0, 0, 255);
-int colorNum = 1;
-int targetY = 770;
-int targetRow = 5;
+int start;
+color pieceColor;
+int colorNum;
+int targetY;
+int targetRow;
 int targetX;
+int updated;
 Board gameBoard;
 
 void setup() {
+  colorNum = 1;
+  pieceColor = color(0, 0, 255);
+  start = 3;
+  updated = 0;
+  targetY = 770;
+  targetRow = 5;
   size(792, 770);
-  fill(200);
   text(mouseX, 10, 10);
   text(mouseY, 10, 30);
   
@@ -44,23 +50,29 @@ public int findTargetYCor(int xCor) {
 }
 
 void draw() {
+  if(start == 3){
+    fill(0, 0, 255);
+    rect(0, 0, 792, 770);
+    
+    fill(255, 216, 1);
+    rect(225, 325, 375, 75);
+  }
+  if(start == 0 || start == 1){
   targetX = mouseX;
   if(targetX < 118) targetX = 118;
   if(targetX > 718) targetX = 718;
   if (coord.y <= 40) column = targetX / 94 - 1;
-  //println(mouseX + " " + column + " " + (column*94+118) + " " + coord.x);
-  //println(column);
   coord.x = column * 94 + 118;
   for (int i = 0; i < 6; i++) holes[i] = new PVector(column * 94 + 118, 178 + 94 * i);
 
   image(board, 0, 0); 
   if (coord.y < targetY && start == 1) {
-    //float distance = targetY - coord.y;
-    //float stepSize = distance / 15; 
     coord.y += (coord.y-39) / 9;
   } else if (coord.y > targetY) {
     coord.y = targetY;
   }
+  if(coord.y == targetY) updated = 1;
+  if(updated > 0) updated++;
 
   board.loadPixels();
 
@@ -100,14 +112,23 @@ void draw() {
       colorNum = 1;
     }
   }
+  if((gameBoard.checkWin() != 0 && updated == 50)|| gameBoard.isFull()) setup();
+  }
 }
 
 
 void mousePressed(){
-  if(start == 0 && gameBoard.findEmptyRow(column) != -1){
+  if(start == 0 && gameBoard.findEmptyRow(column) != -1 && (gameBoard.checkWin() != 4 && gameBoard.checkWin() != 8)){
+      updated = 0;
       start = 1;
       targetY = findTargetYCor(targetX);
       gameBoard.updateBoard(targetX, colorNum);
       System.out.println(gameBoard);
+      println(gameBoard.isFull());
+      println(gameBoard.checkWin());
+  }
+  
+  if(start == 3){
+    if(mouseX > 300 && mouseX < 500 && mouseY > 300 && mouseY < 400) start = 0;
   }
 }

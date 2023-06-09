@@ -1,23 +1,17 @@
 public class Cell {
-  private int row;
-  private int column;
   private boolean occupied;
   private int cellColor;
   private int xCor;
   private int yCor;
 
   public Cell(int row, int column) {
-    this.row = row;
-    this.column = column;
     this.occupied = false;
     this.cellColor = 0;
     xCor = 116 + column * 94;
     yCor = 178 +row * 94;
   }
   
-  public Cell(int row, int column, int cellColor) {
-    this.row = row;
-    this.column = column;
+  public Cell(int cellColor) {
     this.cellColor = cellColor;
     this.occupied = true;
   }
